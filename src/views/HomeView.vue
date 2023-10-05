@@ -1,9 +1,7 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import AllCustomers from '@/components/Customer/AllCustomers.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <AllCustomers />
 </template>
