@@ -1,7 +1,5 @@
-<script setup>
-import AllCustomers from '@/components/Customer/AllCustomers.vue'
-</script>
+<script setup></script>
 
 <template>
-  <AllCustomers />
+  <h1>Home</h1>
 </template>

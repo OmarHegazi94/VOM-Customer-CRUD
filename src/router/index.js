@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
+import AllCustomers from '@/components/Customer/AllCustomers.vue'
+import AddCustomer from '@/components/Customer/AddCustomer.vue'
+import EditCustomer from '@/components/Customer/EditCustomer.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,16 +10,36 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
+    {
+      path: '/customers',
+      name: 'customers',
+      component: () => import('@/views/CustomersView.vue'),
+      children: [
+        {
+          path: '',
+          name: 'allcustomers',
+          component: AllCustomers,
+        },
+        {
+          path: '/customers/add',
+          name: 'addcustomer',
+          component: AddCustomer,
+        },
+        {
+          path: '/customers/edit/:id',
+          name: 'editcustomer',
+          component: EditCustomer,
+        },
+      ]
+    },
+    { path: '/:pathMatch(.*)', name: 'page-not-found', component: () => import('@/views/PageNotfound.vue') },
     // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
+    //   path: '*',
+    //   name: 'pagenotfound',
+    //   component: () => import('@/views/PageNotfound.vue'),
+    // },
   ]
 })
 

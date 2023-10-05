@@ -1,4 +1,5 @@
 <script setup>
+import { RouterLink } from 'vue-router';
 import IconUsers from '@/components/icons/IconUsers.vue';
 import IconAdd from '@/components/icons/IconAdd.vue';
 </script>
@@ -24,16 +25,16 @@ import IconAdd from '@/components/icons/IconAdd.vue';
       <div class="offcanvas-body vh-100 d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+            <RouterLink to="/customers" class="nav-link d-flex align-items-center gap-2 active" aria-current="page">
               <IconUsers />
               All Customers
-            </a>
+            </RouterLink>
           </li>
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="#">
+            <RouterLink to="/customers/add" class="nav-link d-flex align-items-center gap-2">
               <IconAdd />
-              Add New Customer
-            </a>
+              Add Customer
+            </RouterLink>
           </li>
         </ul>
       </div>
