@@ -1,7 +1,7 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import IconUsers from '@/components/icons/IconUsers.vue';
-import IconAdd from '@/components/icons/IconAdd.vue';
+import IconUsers from '@/components/icons/IconUsers.vue'
+import IconAdd from '@/components/icons/IconAdd.vue'
+import IconDocument from '@/components/icons/IconDocument.vue'
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import IconAdd from '@/components/icons/IconAdd.vue';
       aria-labelledby="sidebarMenuLabel"
     >
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="sidebarMenuLabel">VOM Customers</h5>
+        <RouterLink to="/" class="offcanvas-title" id="sidebarMenuLabel">VOM Customers</RouterLink>
         <button
           type="button"
           class="btn-close"
@@ -22,18 +22,40 @@ import IconAdd from '@/components/icons/IconAdd.vue';
           aria-label="Close"
         ></button>
       </div>
-      <div class="offcanvas-body vh-100 d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+      <div class="offcanvas-body vh-100 d-md-flex flex-column p-0 overflow-y-auto">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <RouterLink to="/customers" class="nav-link d-flex align-items-center gap-2 active" aria-current="page">
+            <RouterLink
+              to="/"
+              active-class="active-link"
+              exact-active-class="exact-active-link"
+              class="nav-link d-flex align-items-center gap-2 py-3"
+              aria-current="page"
+            >
               <IconUsers />
               All Customers
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/customers/add" class="nav-link d-flex align-items-center gap-2">
+            <RouterLink
+              to="/customers/add"
+              active-class="active-link"
+              exact-active-class="exact-active-link"
+              class="nav-link d-flex align-items-center gap-2 py-3"
+            >
               <IconAdd />
               Add Customer
+            </RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink
+              to="/invoice"
+              active-class="active-link"
+              exact-active-class="exact-active-link"
+              class="nav-link d-flex align-items-center gap-2 py-3"
+            >
+              <IconDocument />
+              Invoice
             </RouterLink>
           </li>
         </ul>
@@ -42,4 +64,21 @@ import IconAdd from '@/components/icons/IconAdd.vue';
   </div>
 </template>
 
-<style lang=""></style>
+<style scoped>
+.nav-link {
+  color: #52789d;
+  font-weight: 600;
+}
+
+.active {
+  color: var(--bs-indigo);
+  --bs-bg-opacity: 1;
+  background-color: var(--bs-gray-200);
+}
+
+.exact-active-link {
+  color: var(--bs-indigo);
+  --bs-bg-opacity: 1;
+  background-color: var(--bs-gray-200);
+}
+</style>

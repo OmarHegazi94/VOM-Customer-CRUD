@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
+// import HomeView from '@/views/HomeView.vue'
+import InvoiceView from '@/views/InvoiceView.vue'
 import AllCustomers from '@/components/Customer/AllCustomers.vue'
 import AddCustomer from '@/components/Customer/AddCustomer.vue'
 import EditCustomer from '@/components/Customer/EditCustomer.vue'
@@ -7,13 +8,18 @@ import EditCustomer from '@/components/Customer/EditCustomer.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: HomeView,
+    // },
     {
-      path: '/',
-      name: 'home',
-      component: HomeView,
+      path: '/invoice',
+      name: 'invoice',
+      component: InvoiceView,
     },
     {
-      path: '/customers',
+      path: '/',
       name: 'customers',
       component: () => import('@/views/CustomersView.vue'),
       children: [

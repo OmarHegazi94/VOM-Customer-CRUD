@@ -4,7 +4,7 @@ import IconMenu from '@/components/icons/IconMenu.vue';
 
 <template>
   <header class="bg-dark flex-md-nowrap navbar p-0 shadow py-3" data-bs-theme="dark">
-    <h3 class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white fw-bold mb-0">VOM Customers</h3>
+    <RouterLink to="/" class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white fw-bold mb-0">VOM Customers</RouterLink>
 
     <ul class="navbar-nav flex-row d-md-none">
       <li class="nav-item text-nowrap">
@@ -17,7 +17,7 @@ import IconMenu from '@/components/icons/IconMenu.vue';
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-            <IconMenu />
+          <IconMenu />
         </button>
       </li>
     </ul>

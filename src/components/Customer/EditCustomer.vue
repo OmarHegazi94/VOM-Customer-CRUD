@@ -1,8 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { db } from '@/firebase/init.js'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 const route = useRoute()
 const router = useRouter()
@@ -15,11 +17,11 @@ onMounted(async () => {
 
   if (docSnap.exists()) {
     console.log('Document data:', docSnap.data())
-    name.value = docSnap.data().name
-    email.value = docSnap.data().email
-    phone.value = docSnap.data().phone
-    description.value = docSnap.data().description
-    avatar.value = docSnap.data().avatar
+    editCustomerForm.name = docSnap.data().name
+    editCustomerForm.email = docSnap.data().email
+    editCustomerForm.phone = docSnap.data().phone
+    editCustomerForm.description = docSnap.data().description
+    editCustomerForm.avatar = docSnap.data().avatar
   } else {
     // docSnap.data() will be undefined in this case
     console.log('No such document!')
@@ -27,19 +29,21 @@ onMounted(async () => {
 })
 
 // Customer data
-const name = ref('')
-const email = ref('')
-const phone = ref('')
-const description = ref('')
-const avatar = ref('')
+const editCustomerForm = reactive({
+  name: '',
+  email: '',
+  phone: '',
+  description: '',
+  avatar: ''
+})
 
 async function editCustomer() {
   const customer = {
-    name: name.value,
-    email: email.value,
-    phone: phone.value,
-    description: description.value,
-    avatar: avatar.value
+    name: editCustomerForm.name,
+    email: editCustomerForm.email,
+    phone: editCustomerForm.phone,
+    description: editCustomerForm.description,
+    avatar: editCustomerForm.avatar
   }
 
   // Update a new document with a generated id.
@@ -54,7 +58,7 @@ async function editCustomer() {
     .finally(() => {
         setTimeout(() => {
             updateSuccess.value = false
-            router.push({ path: '/customers' })
+            router.push({ path: '/' })
         }, 2000)
 
     })
@@ -90,12 +94,12 @@ async function editCustomer() {
             <strong class="me-auto">Success</strong>
             <small>Now</small>
           </div>
-          <div class="toast-body">{{ name }} was updated successfully.</div>
+          <div class="toast-body">{{ editCustomerForm.name }} was updated successfully.</div>
         </div>
       </div>
     </div>
 
-    <h4 class="mb-3">Edit Customer</h4>
+    <h3 class="mb-3">Edit Customer</h3>
     <form @submit.prevent="editCustomer" class="needs-validation" novalidate="">
       <div class="row g-3 my-3">
         <div class="col-sm-6">
@@ -106,7 +110,7 @@ async function editCustomer() {
             id="name"
             placeholder=""
             required=""
-            v-model="name"
+            v-model="editCustomerForm.name"
           />
           <div class="invalid-feedback">Valid first name is required.</div>
         </div>
@@ -119,7 +123,7 @@ async function editCustomer() {
             id="email"
             placeholder=""
             required=""
-            v-model="email"
+            v-model="editCustomerForm.email"
           />
           <div class="invalid-feedback">Valid last name is required.</div>
         </div>
@@ -133,7 +137,7 @@ async function editCustomer() {
             id="phone"
             placeholder=""
             required=""
-            v-model="phone"
+            v-model="editCustomerForm.phone"
           />
           <div class="invalid-feedback">Valid first name is required.</div>
         </div>
@@ -146,35 +150,27 @@ async function editCustomer() {
             id="avatar"
             placeholder=""
             required=""
-            v-model="avatar"
+            v-model="editCustomerForm.avatar"
           />
           <div class="invalid-feedback">Valid Avatar url is required.</div>
         </div>
       </div>
 
       <div class="row g-3 my-3">
-        <div class="col-sm-12">
+        <div class="col-sm-12 mb-5">
           <label for="description" class="form-label">Description</label>
-          <textarea
-            type="string"
-            class="form-control"
-            id="description"
-            rows="5"
-            placeholder=""
-            required=""
-            v-model="description"
-          ></textarea>
+          <QuillEditor v-model:content="editCustomerForm.description" theme="snow" content-type="text" />
           <div class="invalid-feedback">Valid Description is required.</div>
         </div>
       </div>
 
-      <!-- <hr class="my-4" /> -->
-
-      <button class="w-100 btn btn-primary btn-lg" type="submit">Edit Customer</button>
+      <div class="row g-3 mt-4">
+        <div class="col-sm-12">
+          <button class="w-100 btn btn-primary btn-lg" type="submit">Edit Customer</button>
+        </div>
+      </div>
     </form>
   </div>
-  <!-- <div class="row g-5">
-  </div> -->
 </template>
 
 <style scoped></style>

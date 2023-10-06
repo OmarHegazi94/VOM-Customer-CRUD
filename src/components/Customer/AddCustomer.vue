@@ -1,47 +1,50 @@
 <script setup>
-import { ref } from 'vue'
-// import { v4 as uuidv4 } from 'uuid';
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { db } from '@/firebase/init.js'
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc } from 'firebase/firestore'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 const addSuccess = ref(false)
+const router = useRouter()
 
 // Customer data
-const name = ref('')
-const email = ref('')
-const phone = ref('')
-const description = ref('')
-const avatar = ref('')
+const newCustomerForm = reactive({
+  name: '',
+  email: '',
+  phone: '',
+  description: '',
+  avatar: ''
+})
 
-
-async function addCustomer(){
+async function addCustomer() {
   const newCustomer = {
-    name: name.value,
-    email: email.value,
-    phone: phone.value,
-    description: description.value,
-    avatar: avatar.value
+    name: newCustomerForm.name,
+    email: newCustomerForm.email,
+    phone: newCustomerForm.phone,
+    description: newCustomerForm.description,
+    avatar: newCustomerForm.avatar
   }
-  console.log('newCustomer', newCustomer);
+  console.log('newCustomer', newCustomer)
 
-  await addDoc(collection(db, 'Customers'), newCustomer).then(() => {
+  await addDoc(collection(db, 'Customers'), newCustomer)
+    .then(() => {
       addSuccess.value = true
-      name.value = ''
-      email.value = ''
-      phone.value = ''
-      description.value = ''
-      avatar.value = ''
+      for (const property in newCustomerForm) {
+        newCustomerForm[property] = ''
+      }
       // console.log('docRef', docRef.id);
     })
     .catch((error) => {
       console.log('Error Adding this document', error)
     })
     .finally(() => {
-        setTimeout(() => {
-            addSuccess.value = false
-        }, 2000)
+      setTimeout(() => {
+        addSuccess.value = false
+        router.push({ path: '/' })
+      }, 2000)
     })
-
 }
 </script>
 
@@ -74,11 +77,11 @@ async function addCustomer(){
             <strong class="me-auto">Success</strong>
             <small>Now</small>
           </div>
-          <div class="toast-body">{{ name }} was added successfully.</div>
+          <div class="toast-body">{{ newCustomerForm.name }} was added successfully.</div>
         </div>
       </div>
     </div>
-    <h4 class="mb-3">Add New Customer</h4>
+    <h3 class="mb-3">Add New Customer</h3>
     <form @submit.prevent="addCustomer" class="needs-validation" novalidate="">
       <div class="row g-3 my-3">
         <div class="col-sm-6">
@@ -89,7 +92,7 @@ async function addCustomer(){
             id="name"
             placeholder="John Wick"
             required=""
-            v-model="name"
+            v-model="newCustomerForm.name"
           />
           <div class="invalid-feedback">Valid first name is required.</div>
         </div>
@@ -102,7 +105,7 @@ async function addCustomer(){
             id="email"
             placeholder="johnwick@chapter4.com"
             required=""
-            v-model="email"
+            v-model="newCustomerForm.email"
           />
           <div class="invalid-feedback">Valid Email is required.</div>
         </div>
@@ -116,7 +119,7 @@ async function addCustomer(){
             id="phone"
             placeholder="99999999"
             required=""
-            v-model="phone"
+            v-model="newCustomerForm.phone"
           />
           <div class="invalid-feedback">Valid Phone is required.</div>
         </div>
@@ -129,35 +132,28 @@ async function addCustomer(){
             id="avatar"
             placeholder="https://picsum.photos/9/200/300"
             required=""
-            v-model="avatar"
+            v-model="newCustomerForm.avatar"
           />
           <div class="invalid-feedback">Valid Avatar url is required.</div>
         </div>
       </div>
 
       <div class="row g-3 my-3">
-        <div class="col-sm-12">
-          <label for="description" class="form-label">Description</label>
-          <textarea
-            type="string"
-            class="form-control"
-            id="description"
-            rows="5"
-            placeholder=""
-            required=""
-            v-model="description"
-          ></textarea>
+        <div class="col-sm-12 mb-5">
+          <label class="form-label">Description</label>
+          <QuillEditor v-model:content="newCustomerForm.description" theme="snow" content-type="text" />
           <div class="invalid-feedback">Valid Description is required.</div>
         </div>
       </div>
 
       <!-- <hr class="my-4" /> -->
-
-      <button class="w-100 btn btn-primary btn-lg" type="submit">Add Customer</button>
+      <div class="row g-3 mt-4">
+        <div class="col-sm-12">
+          <button class="w-100 btn btn-primary btn-lg" type="submit">Add Customer</button>
+        </div>
+      </div>
     </form>
   </div>
-  <!-- <div class="row g-5">
-  </div> -->
 </template>
 
 <style scoped></style>
